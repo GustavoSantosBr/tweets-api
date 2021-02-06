@@ -11,11 +11,13 @@ from src.Service.GetTweets import GetTweets
 
 class GetTweetsByUserNameHandler(Resource):
 
+    def __init__(self):
+        self.__get_tweets = GetTweets()
+
     def get(self, name: str) -> Response:
         try:
             parameters = ParametersDto(name, request.args)
-            get_tweets = GetTweets()
-            result = get_tweets.get_tweets_by_user_name(parameters)
+            result = self.__get_tweets.get_tweets_by_user_name(parameters)
             return ResponseApi(result, StatusHttp.OK).response()
         except TweetNotFoundException as e:
             return ResponseApi(e.get_message(), e.get_code()).response()

@@ -10,7 +10,7 @@ from src.Infrastructure.CrossCutting.File.CsvFile.ReadCsvFile import ReadCsvFile
 class UpdateCsvFile(BaseFile):
 
     def __init__(self):
-        self.read_csv_file = ReadCsvFile()
+        self.__read_csv_file = ReadCsvFile()
 
     def insert_or_update_file(self, file_name: str, data: list) -> Tuple[int, int]:
         try:
@@ -18,7 +18,7 @@ class UpdateCsvFile(BaseFile):
             data_in_data_frame = pandas.DataFrame(data)
 
             if self.file_exists(file_path):
-                old_records = self.read_csv_file.read_file(file_path)
+                old_records = self.__read_csv_file.read_file(file_path)
                 all_records = pandas.concat([old_records, data_in_data_frame])
                 new_records = all_records.drop_duplicates(subset=["id"], keep="last", inplace=False)
                 count_all_records = new_records.shape[0]

@@ -12,11 +12,13 @@ from src.Service.UpdateTweetsDataset import UpdateTweetsDataset
 
 class UpdateTweetsDatasetHandler(Resource):
 
+    def __init__(self):
+        self.__update_tweets_dataset = UpdateTweetsDataset()
+
     def put(self, name: str) -> Response:
         try:
             parameters = ParametersDto(name, request.args)
-            update_tweets_dataset = UpdateTweetsDataset()
-            result = update_tweets_dataset.update_tweets_dataset_by_user_name(parameters)
+            result = self.__update_tweets_dataset.update_tweets_dataset_by_user_name(parameters)
             return ResponseApi(result, StatusHttp.OK).response()
         except TweetNotFoundException as e:
             return ResponseApi(e.get_message(), e.get_code()).response()

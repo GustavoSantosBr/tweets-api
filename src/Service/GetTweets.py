@@ -11,12 +11,15 @@ from src.Infrastructure.CrossCutting.TwitterApi.TwitterConnection import Twitter
 
 class GetTweets:
 
+    def __init__(self):
+        self.__twitter_connection = TwitterConnection()
+
     def get_tweets_by_user_name(self, parameters: ParametersDto) -> TweetDto:
         try:
-            twitter_connection = TwitterConnection.connect()
+            twitter_connection = self.__twitter_connection.connect()
             tweets_search = tweepy.Cursor(twitter_connection.search,
-                                          q=f"from:{parameters.get_name()} -filter:retweets",
-                                          since=parameters.get_date_since()).items(parameters.get_limit())
+                                          q=f"from:{parameters.name} -filter:retweets",
+                                          since=parameters.date_since).items(parameters.limit)
             tweets_details = []
             user_created = user_id = user_name = None
 
